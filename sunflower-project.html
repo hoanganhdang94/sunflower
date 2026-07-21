@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunflower Project · Bedienungsanleitung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --paper:#fafaf8;
+    --grey:#6f6f6a;
+    --grey-light:#dcdad4;
+    --display:'Archivo Black', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+    --body:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    background:var(--paper); color:var(--ink); font-family:var(--body);
+    line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:76px;
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+  a{color:inherit;}
+
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:2; opacity:.06; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- small graphic dot mark (replaces old flower ring) ---------- */
+  .dot-mark{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--ink); flex-shrink:0; }
+  .dot-mark.on-dark{ background:var(--paper); }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20; background:var(--paper); border-bottom:1px solid var(--ink);
+    padding:14px 20px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .topbar .mark{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; display:flex; align-items:center; gap:9px; }
+  .topbar .cat-no{ font-family:var(--mono); font-size:11px; color:var(--grey); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:var(--ink); color:var(--paper); position:relative; overflow:hidden;
+    padding:40px 20px 34px; display:flex; flex-direction:column; justify-content:flex-start;
+  }
+  .hero-content{ position:relative; z-index:2; }
+
+  .hero .status{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:.85;
+    display:flex; align-items:center; gap:9px;
+  }
+  .hero .status .dot-mark{ animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:.3;} 50%{opacity:1;} }
+
+  .hero h1{
+    font-family:var(--display); font-weight:400; text-transform:uppercase;
+    font-size:clamp(2.5rem, 13vw, 4.4rem);
+    line-height:.92; letter-spacing:-.01em; margin:16px 0 6px;
+  }
+  .hero .by{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:#b8b8b4; margin-bottom:20px; }
+
+  /* ambient blurred blob texture, bleeding off the top edge — echo of the poster artwork */
+  .hero-blobs{ position:absolute; inset:0; z-index:1; opacity:.5; pointer-events:none; }
+  .hero-blobs svg{ width:100%; height:100%; }
+
+  /* the "clear spot" window: crisp black text on a soft blurred white blob — 
+     a small island of clarity inside the dark/blurred field, echoing what the piece is about */
+  .blob-window{ position:relative; z-index:2; padding:22px 22px 26px; margin:6px 0 26px; }
+  .blob-window::before{
+    content:""; position:absolute; inset:-6px 0 -10px; z-index:-1; background:var(--paper);
+    border-radius:58% 42% 63% 37% / 44% 58% 42% 56%;
+    filter:blur(9px);
+  }
+  .blob-window p{ font-size:1rem; max-width:34ch; color:var(--ink); font-weight:500; }
+
+  .hero .meta-row{
+    display:flex; border-top:1px solid rgba(250,250,248,.25);
+    font-family:var(--mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+  }
+  .hero .meta-row div{ flex:1; padding:14px 14px 0 14px; border-right:1px solid rgba(250,250,248,.25); }
+  .hero .meta-row div:first-child{ padding-left:0; }
+  .hero .meta-row div:last-child{ border-right:none; padding-right:0; }
+  .hero .meta-row div span{ display:block; color:#9c9c98; margin-bottom:4px; font-size:10px; }
+  .hero .meta-row div b{ font-family:var(--body); font-weight:600; font-size:13px; text-transform:none; letter-spacing:0; color:var(--paper); }
+
+  /* ---------- tabs ---------- */
+  .tabs{ position:sticky; top:45px; z-index:19; display:flex; background:var(--paper); border-bottom:1px solid var(--ink); }
+  .tab{
+    flex:1; text-align:center; padding:15px 8px; font-family:var(--mono); font-size:12px; letter-spacing:.08em;
+    text-transform:uppercase; background:none; border:none; color:var(--grey); cursor:pointer;
+    border-right:1px solid var(--grey-light); position:relative;
+  }
+  .tab:last-child{ border-right:none; }
+  .tab.active{ color:var(--ink); font-weight:600; }
+  .tab.active::after{ content:""; position:absolute; bottom:-1px; left:0; right:0; height:3px; background:var(--ink); }
+
+  .view{ display:none; animation:fade .35s ease; }
+  .view.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  section{ padding:42px 20px 8px; }
+  .section-head{ display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+  .section-head .no{
+    font-family:var(--mono); font-size:11px; color:var(--paper); background:var(--ink); flex-shrink:0;
+    width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+  }
+  .section-head h2{ font-family:var(--display); font-weight:400; text-transform:uppercase; font-size:1.3rem; letter-spacing:-.01em; }
+  .section-intro{ color:var(--grey); font-size:.92rem; max-width:50ch; margin-bottom:24px; }
+
+  /* ---------- werkdaten ---------- */
+  .spec-grid{ display:grid; grid-template-columns:1fr; border-top:1px solid var(--ink); margin-top:6px; }
+  .spec-cell{ padding:16px 0; border-bottom:1px solid var(--ink); display:flex; justify-content:space-between; gap:12px; }
+  .spec-cell span.k{ font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--grey); }
+  .spec-cell span.v{ font-weight:500; text-align:right; }
+
+  /* ---------- Bedienung: steps ---------- */
+  .step{ display:flex; gap:16px; border-bottom:1px solid var(--ink); padding:20px 0; }
+  .step:first-child{ border-top:1px solid var(--ink); }
+  .step .num{ font-family:var(--mono); font-weight:500; font-size:1.1rem; color:var(--grey); min-width:30px; line-height:1.3; }
+  .step .content h3{ font-size:1rem; font-weight:600; margin-bottom:6px; }
+  .step .content p{ color:#333; font-size:.9rem; max-width:48ch; }
+
+  /* ---------- control elements (accordion) ---------- */
+  .stack{ display:flex; flex-direction:column; border-top:1px solid var(--ink); }
+  .item{ border-bottom:1px solid var(--ink); }
+  .item-head{
+    width:100%; background:none; border:none; text-align:left; cursor:pointer;
+    padding:18px 0; display:flex; align-items:center; gap:16px; color:var(--ink);
+  }
+  .item-head .idx{ font-family:var(--mono); font-size:12px; color:var(--grey); min-width:30px; }
+  .item-head .title{ flex:1; }
+  .item-head .name{ font-family:var(--body); font-weight:600; font-size:1rem; }
+  .item-head .sub{ font-family:var(--mono); font-size:10.5px; color:var(--grey); text-transform:uppercase; letter-spacing:.06em; margin-top:3px; }
+  .item-head .plus{ font-family:var(--mono); font-size:18px; width:20px; text-align:center; transition:transform .25s ease; flex-shrink:0; }
+  .item.open .item-head .plus{ transform:rotate(45deg); }
+  .item-body{ max-height:0; overflow:hidden; transition:max-height .35s ease; }
+  .item-body-inner{ padding:0 0 22px 46px; color:#333; font-size:.93rem; max-width:52ch; }
+  .item-body-inner p + p{ margin-top:10px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tag{ font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; border:1px solid var(--ink); padding:4px 8px; }
+
+  /* ---------- rules ---------- */
+  .rules-box{ border:1px solid var(--ink); padding:20px; margin:26px 0; }
+  .rules-box h3{ font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:14px; }
+  .rules-box ul{ list-style:none; }
+  .rules-box li{ display:flex; gap:12px; font-size:.9rem; padding:8px 0; border-top:1px dashed var(--grey-light); }
+  .rules-box li:first-child{ border-top:none; }
+  .rules-box li::before{ content:""; width:6px; height:6px; margin-top:7px; border-radius:50%; background:var(--ink); flex-shrink:0; }
+
+  footer{ padding:40px 20px 20px; border-top:1px solid var(--ink); margin-top:30px; position:relative; overflow:hidden; }
+  footer .foot-title{ font-family:var(--display); font-weight:400; text-transform:uppercase; font-size:1.2rem; margin-bottom:10px; max-width:20ch; }
+  footer p{ color:var(--grey); font-size:.85rem; max-width:42ch; }
+  footer .credits{ font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink); margin-top:24px; display:flex; flex-wrap:wrap; gap:14px; }
+  footer .fmark{ font-family:var(--mono); font-size:10px; color:var(--grey); margin-top:16px; letter-spacing:.05em; display:flex; align-items:center; gap:8px; }
+
+  .bottom-nav{ position:fixed; bottom:0; left:0; right:0; z-index:30; display:flex; background:var(--ink); color:var(--paper); }
+  .bottom-nav button{
+    flex:1; background:none; border:none; color:#9c9c98; padding:14px 0 10px; font-family:var(--mono);
+    font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; display:flex; flex-direction:column;
+    align-items:center; gap:5px; cursor:pointer;
+  }
+  .bottom-nav button .dot{ width:5px; height:5px; border-radius:50%; background:transparent; }
+  .bottom-nav button.active{ color:var(--paper); }
+  .bottom-nav button.active .dot{ background:var(--paper); }
+
+  @media (min-width:760px){
+    body{ padding-bottom:0; }
+    .bottom-nav{ display:none; }
+    .tabs{ top:49px; max-width:640px; margin:0 auto; }
+    .topbar, section, footer{ padding-left:calc(50% - 320px); padding-right:calc(50% - 320px); }
+    .hero{ padding-left:calc(50% - 320px); padding-right:calc(50% - 320px); }
+    .hero .meta-row{ max-width:640px; }
+    .spec-grid{ max-width:640px; }
+    .hero h1{ font-size:clamp(3rem, 6vw, 5.4rem); }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="topbar">
+  <div class="mark"><span class="dot-mark"></span>Sunflower Project</div>
+  <div class="cat-no">Werk Nr. 01</div>
+</div>
+
+<div class="hero">
+  <div class="hero-blobs" aria-hidden="true">
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blobblur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="16"/>
+        </filter>
+      </defs>
+      <g filter="url(#blobblur)" fill="#fafaf8">
+        <ellipse cx="70" cy="40" rx="55" ry="30"/>
+        <ellipse cx="330" cy="70" rx="60" ry="40"/>
+        <ellipse cx="210" cy="20" rx="40" ry="22"/>
+        <ellipse cx="20" cy="130" rx="34" ry="50"/>
+        <ellipse cx="370" cy="180" rx="40" ry="60"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="status"><span class="dot-mark on-dark"></span>Sensor aktiv</div>
+    <h1>Sunflower<br>Project</h1>
+    <div class="by">Interaktive Installation, 2026</div>
+
+    <div class="blob-window">
+      <p>Eine 3D-gedruckte Sonnenblume aus LED-Licht. Folge ihrem wandernden Punkt einmal mit den eigenen Augen, einmal mit denen einer Sehbehinderung.</p>
+    </div>
+
+    <div class="meta-row">
+      <div><span>Dauer</span><b>ca. 3 Min.</b></div>
+      <div><span>Kapazität</span><b>1 Brille aktiv</b></div>
+      <div><span>Aufbau</span><b>Blume + Sensor-Kasten</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-view="werk">Das Werk</button>
+  <button class="tab" data-view="bedienung">Bedienung</button>
+</div>
+
+<!-- ================= DAS WERK ================= -->
+<div class="view active" id="view-werk">
+
+  <section>
+    <div class="section-head"><span class="no">01</span><h2>Konzept</h2></div>
+    <p class="section-intro">Sunflower Project macht Sehbehinderungen für einen Moment erfahrbar. Wer eine der Simulationsbrillen aufsetzt, versucht, einem farbigen Punkt zu folgen, der über die Blütenblätter einer LED-bestückten Sonnenblume wandert. Mit eingeschränkter Sicht wird daraus eine ungleich schwerere Aufgabe. Schon unabhängig vom Punkt verändert sich die Wahrnehmung sofort: Farben wirken blasser oder verschwimmen ineinander, Kontraste gehen verloren, Ränder und Formen werden unscharf, und auch der restliche Raum lässt sich nur noch eingeschränkt erfassen. Das Werk will sichtbar machen, was im Alltag oft unsichtbar bleibt: welches Privileg uneingeschränktes Sehen ist.</p>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="no">02</span><h2>Technische Daten</h2></div>
+    <div class="spec-grid">
+      <div class="spec-cell"><span class="k">Blume</span><span class="v">3D-Druck, LED-Streifen</span></div>
+      <div class="spec-cell"><span class="k">Brillen</span><span class="v">Mehrere Modelle, simulierte Sehbehinderungen</span></div>
+      <div class="spec-cell"><span class="k">Sensor</span><span class="v">Bewegungssensor, grauer Kasten, berührungslos</span></div>
+      <div class="spec-cell"><span class="k">Interaktion</span><span class="v">Handbewegung ändert Farbe &amp; Laufrichtung</span></div>
+      <div class="spec-cell"><span class="k">Baujahr</span><span class="v">2026</span></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= BEDIENUNG ================= -->
+<div class="view" id="view-bedienung">
+
+  <section>
+    <div class="section-head"><span class="no">01</span><h2>So wird's bedient</h2></div>
+    <p class="section-intro">Fünf kurze Schritte. Am eindrücklichsten wirkt das Werk, wenn man es einmal mit und einmal ohne Brille ausprobiert.</p>
+    <div id="steps"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="no">02</span><h2>Bedienelemente</h2></div>
+    <div class="stack" id="controls"></div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="no">03</span><h2>Im Umgang mit dem Werk</h2></div>
+    <div class="rules-box">
+      <h3>Bitte beachten</h3>
+      <ul id="rules"></ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="no">04</span><h2>Häufige Fragen</h2></div>
+    <div class="stack faq" id="faq"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="foot-title">Ein Punkt, den nicht alle gleich sehen.</div>
+  <p>Fragen zur Bedienung oder zu den Brillen? Die Aufsicht am Werk hilft jederzeit weiter.</p>
+  <div class="credits">
+    <span>Karla</span><span>Luca</span><span>Julatumin</span><span>Jonas</span><span>Anh Dang</span>
+  </div>
+  <div class="fmark"><span class="dot-mark"></span>SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1 · SCHWARZ/WEISS</div>
+  <div class="fmark" style="margin-top:6px;">Projektmodul Interaction Design · Dozent: Yves Peitzner</div>
+</footer>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" data-view="werk"><span class="dot"></span>Das Werk</button>
+  <button class="nav-btn" data-view="bedienung"><span class="dot"></span>Bedienung</button>
+</div>
+
+<script>
+  // ---------- content (hier anpassen) ----------
+  const steps = [
+    { title:"Brille auswählen und aufsetzen", text:"Auf dem Rack neben der Installation hängen mehrere Brillen, jede simuliert eine andere Sehbehinderung. Eine auswählen und aufsetzen." },
+    { title:"Dem Punkt folgen", text:"Die LED-Sonnenblume ansehen und versuchen, dem wandernden farbigen Punkt mit den Augen entlang der Blütenblätter zu folgen." },
+    { title:"Über den grauen Kasten streichen", text:"Eine leichte Handbewegung über den Sensor lässt die Sonnenblume in der Komplementärfarbe leuchten und kehrt zugleich die Laufrichtung des Punktes um." },
+    { title:"Ohne Brille vergleichen", text:"Brille kurz absetzen und denselben Punkt noch einmal verfolgen. Der Unterschied zeigt, wie viel Sehkraft man sonst einfach als selbstverständlich hinnimmt." },
+    { title:"Weitergeben", text:"Brille zurück auf das Rack hängen, damit die nächste Person sie findet." },
+  ];
+
+  const controls = [
+    { name:"Simulationsbrillen", role:"Mehrere Modelle, auf dem Rack", text:"Jede Brille verzerrt das Sehen anders, von eingeschränktem Gesichtsfeld bis zu verschwommenen Kontrasten. Sie bilden reale, häufige Sehbehinderungen nach. Genauere Infos zu den einzelnen Modellen liegen im Flyer neben dem Rack aus.", tags:["Ohne Strom","Über Alltagsbrillen tragbar","Details im Flyer"] },
+    { name:"Grauer Sensor-Kasten", role:"Bewegungssensor, berührungslos", text:"Eine leichte Handbewegung darüber genügt, kein Drücken oder Greifen nötig. Der Sensor löst zwei Dinge gleichzeitig aus: Farbwechsel der LEDs zur Komplementärfarbe der Sonnenblume und Richtungswechsel des Punktes.", tags:["Berührungslos","Sofortige Reaktion"] },
+    { name:"LED-Sonnenblume", role:"3D-Druck mit LED-Streifen", text:"Ein einzelner farbiger Punkt läuft in Schleife über die Blütenblätter. Er ist der Blickfixpunkt der gesamten Installation.", tags:["Punkt läuft in Schleife"] },
+  ];
+
+  const rules = [
+    "Brille nach Gebrauch zurück auf das Rack hängen, damit die nächste Person sie findet.",
+    "Sensor nur leicht mit der Hand streifen, nicht drücken oder festhalten.",
+    "Bei Schwindel oder Unwohlsein die Brille sofort absetzen.",
+    "Die Brillen können meist über eine eigene Sehhilfe getragen werden.",
+    "Rücksicht nehmen: nur eine Person gleichzeitig mit Brille am Werk.",
+  ];
+
+  const faq = [
+    { name:"Warum wechselt die Farbe zur Komplementärfarbe?", text:"Der Farbwechsel verändert den Kontrast, den die jeweilige Sehbehinderung wahrnimmt. Manche Farbpaare machen den Punkt leichter erkennbar, andere schwerer. So wird spürbar, wie unterschiedlich Kontraste je nach Sehvermögen wirken." },
+    { name:"Welche Sehbehinderungen werden simuliert?", text:"Die Brillen bilden unter anderem eingeschränktes Gesichtsfeld, verschwommenes Sehen und reduziertes Kontrastsehen nach. Das sind typische Auswirkungen häufiger Augenerkrankungen." },
+    { name:"Kann ich das Werk auch ohne Brille erleben?", text:"Ja, aber der Kern des Werks liegt im Vergleich: einmal mit, einmal ohne eingeschränkte Sicht denselben Punkt zu verfolgen." },
+  ];
+
+  // ---------- render helpers ----------
+  function renderAccordion(container, data, numbered=true){
+    container.innerHTML = data.map((d,i)=>`
+      <div class="item">
+        <button class="item-head">
+          ${numbered ? `<span class="idx">${String(i+1).padStart(2,'0')}</span>` : ''}
+          <span class="title">
+            <span class="name">${d.name}</span>
+            ${d.role ? `<span class="sub">${d.role}</span>` : ''}
+          </span>
+          <span class="plus">+</span>
+        </button>
+        <div class="item-body">
+          <div class="item-body-inner">
+            <p>${d.text}</p>
+            ${d.tags ? `<div class="tag-row">${d.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    container.querySelectorAll('.item').forEach(item=>{
+      const head = item.querySelector('.item-head');
+      const body = item.querySelector('.item-body');
+      head.addEventListener('click', ()=>{
+        const isOpen = item.classList.contains('open');
+        container.querySelectorAll('.item.open').forEach(o=>{
+          o.classList.remove('open');
+          o.querySelector('.item-body').style.maxHeight = null;
+        });
+        if(!isOpen){
+          item.classList.add('open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+  }
+
+  function renderSteps(container, data){
+    container.innerHTML = data.map((s,i)=>`
+      <div class="step">
+        <div class="num">${String(i+1).padStart(2,'0')}</div>
+        <div class="content">
+          <h3>${s.title}</h3>
+          <p>${s.text}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderRules(container, data){
+    container.innerHTML = data.map(r=>`<li>${r}</li>`).join('');
+  }
+
+  renderSteps(document.getElementById('steps'), steps);
+  renderAccordion(document.getElementById('controls'), controls);
+  renderRules(document.getElementById('rules'), rules);
+  renderAccordion(document.getElementById('faq'), faq, false);
+
+  // ---------- tab switching ----------
+  function switchView(name){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+name).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.view===name));
+    document.querySelectorAll('.nav-btn').forEach(t=>t.classList.toggle('active', t.dataset.view===name));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.querySelectorAll('.tab, .nav-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>switchView(btn.dataset.view));
+  });
+</script>
+
+</body>
+</html>
