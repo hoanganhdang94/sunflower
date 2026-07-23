@@ -30,17 +30,29 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* ---------- small graphic dot mark (replaces old flower ring) ---------- */
   .dot-mark{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--ink); flex-shrink:0; }
   .dot-mark.on-dark{ background:var(--paper); }
 
   /* ---------- top bar ---------- */
   .topbar{
     position:sticky; top:0; z-index:20; background:var(--paper); border-bottom:1px solid var(--ink);
-    padding:14px 20px; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px;
   }
-  .topbar .mark{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; display:flex; align-items:center; gap:9px; }
-  .topbar .cat-no{ font-family:var(--mono); font-size:11px; color:var(--grey); }
+  .topbar .mark{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; display:flex; align-items:center; gap:9px; flex-shrink:0; }
+  .topbar-right{ display:flex; align-items:center; gap:14px; }
+  .topbar .cat-no{ font-family:var(--mono); font-size:11px; color:var(--grey); white-space:nowrap; }
+  .lang-switch{ display:flex; align-items:center; font-family:var(--mono); font-size:13px; letter-spacing:.04em; }
+  .lang-switch select{
+    appearance:none; -webkit-appearance:none; -moz-appearance:none;
+    background:var(--paper); color:var(--ink); border:1px solid var(--ink);
+    font-family:inherit; font-size:inherit; letter-spacing:inherit;
+    padding:6px 26px 6px 10px; cursor:pointer;
+    background-image:linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position:calc(100% - 14px) 55%, calc(100% - 9px) 55%;
+    background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
+  }
+  .lang-switch select:focus{ outline:1px dashed var(--ink); outline-offset:2px; }
+  @media (max-width:380px){ .cat-no{ display:none; } }
 
   /* ---------- hero ---------- */
   .hero{
@@ -52,16 +64,13 @@
   .hero h1{
     font-family:var(--display); font-weight:400; text-transform:uppercase;
     font-size:clamp(2.5rem, 13vw, 4.4rem);
-    line-height:.92; letter-spacing:-.01em; margin:16px 0 6px;
+    line-height:.92; letter-spacing:-.01em; margin:0 0 6px;
   }
   .hero .by{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:#b8b8b4; margin-bottom:20px; }
 
-  /* ambient blurred blob texture, bleeding off the top edge — echo of the poster artwork */
   .hero-blobs{ position:absolute; inset:0; z-index:1; opacity:.5; pointer-events:none; }
   .hero-blobs svg{ width:100%; height:100%; }
 
-  /* the "clear spot" window: crisp black text on a soft blurred white blob — 
-     a small island of clarity inside the dark/blurred field, echoing what the piece is about */
   .blob-window{ position:relative; z-index:2; padding:22px 22px 26px; margin:6px 0 26px; }
   .blob-window::before{
     content:""; position:absolute; inset:-6px 0 -10px; z-index:-1; background:var(--paper);
@@ -178,7 +187,15 @@
 
 <div class="topbar">
   <div class="mark"><span class="dot-mark"></span>Sunflower Project</div>
-  <div class="cat-no">Werk Nr. 01</div>
+  <div class="topbar-right">
+    <div class="cat-no" data-i18n="catno">Werk Nr. 01</div>
+    <div class="lang-switch">
+      <select id="lang-select" aria-label="Sprache / Language">
+        <option value="de">🇩🇪 DE</option>
+        <option value="en">🇬🇧 EN</option>
+      </select>
+    </div>
+  </div>
 </div>
 
 <div class="hero">
@@ -201,40 +218,40 @@
 
   <div class="hero-content">
     <h1>Sunflower<br>Project</h1>
-    <div class="by">Interaktive Installation, 2026</div>
+    <div class="by" data-i18n="by">Interaktive Installation, 2026</div>
 
     <div class="blob-window">
-      <p>Eine 3D-gedruckte Sonnenblume aus LED-Licht. Folge ihrem wandernden Punkt einmal mit den eigenen Augen, einmal mit denen einer Sehbehinderung.</p>
+      <p data-i18n="lead">Eine 3D-gedruckte Sonnenblume aus LED-Licht. Folge ihrem wandernden Punkt einmal mit den eigenen Augen, einmal mit denen einer Sehbehinderung.</p>
     </div>
 
     <div class="meta-row">
-      <div><span>Dauer</span><b>ca. 3 Min.</b></div>
-      <div><span>Aufbau</span><b>Blume + Sensor-Kasten</b></div>
+      <div><span data-i18n="metaDauerK">Dauer</span><b data-i18n="metaDauerV">ca. 3 Min.</b></div>
+      <div><span data-i18n="metaAufbauK">Aufbau</span><b data-i18n="metaAufbauV">Blume + Sensor-Kasten</b></div>
     </div>
   </div>
 </div>
 
 <div class="tabs">
-  <button class="tab active" data-view="werk">Das Werk</button>
-  <button class="tab" data-view="bedienung">Bedienung</button>
+  <button class="tab active" data-view="werk" data-i18n="tabWerk">Das Werk</button>
+  <button class="tab" data-view="bedienung" data-i18n="tabBedienung">Bedienung</button>
 </div>
 
 <!-- ================= DAS WERK ================= -->
 <div class="view active" id="view-werk">
 
   <section>
-    <div class="section-head"><span class="no">01</span><h2>Konzept</h2></div>
-    <p class="section-intro">Sunflower Project macht Sehbehinderungen für einen Moment erfahrbar. Wer eine der Simulationsbrillen aufsetzt, versucht, einem farbigen Punkt zu folgen, der über die Blütenblätter einer LED-bestückten Sonnenblume wandert. Mit eingeschränkter Sicht wird daraus eine ungleich schwerere Aufgabe. Schon unabhängig vom Punkt verändert sich die Wahrnehmung sofort: Farben wirken blasser oder verschwimmen ineinander, Kontraste gehen verloren, Ränder und Formen werden unscharf, und auch der restliche Raum lässt sich nur noch eingeschränkt erfassen. Die Sonnenblume ist dabei kein Zufall: Sie steht international als Symbol für unsichtbare Behinderungen, also für Einschränkungen, die man einer Person von außen meist nicht ansieht. Das Werk will genau das sichtbar machen, was im Alltag oft unsichtbar bleibt: welches Privileg uneingeschränktes Sehen ist.</p>
+    <div class="section-head"><span class="no">01</span><h2 data-i18n="h2Konzept">Konzept</h2></div>
+    <p class="section-intro" data-i18n="konzeptText">Sunflower Project macht Sehbehinderungen für einen Moment erfahrbar. Wer eine der Simulationsbrillen aufsetzt, versucht, einem farbigen Punkt zu folgen, der über die Blütenblätter einer LED-bestückten Sonnenblume wandert. Mit eingeschränkter Sicht wird daraus eine ungleich schwerere Aufgabe. Schon unabhängig vom Punkt verändert sich die Wahrnehmung sofort: Farben wirken blasser oder verschwimmen ineinander, Kontraste gehen verloren, Ränder und Formen werden unscharf, und auch der restliche Raum lässt sich nur noch eingeschränkt erfassen. Die Sonnenblume ist dabei kein Zufall: Sie steht international als Symbol für unsichtbare Behinderungen, also für Einschränkungen, die man einer Person von außen meist nicht ansieht. Das Werk will genau das sichtbar machen, was im Alltag oft unsichtbar bleibt: welches Privileg uneingeschränktes Sehen ist.</p>
   </section>
 
   <section>
-    <div class="section-head"><span class="no">02</span><h2>Technische Daten</h2></div>
+    <div class="section-head"><span class="no">02</span><h2 data-i18n="h2Technisch">Technische Daten</h2></div>
     <div class="spec-grid">
-      <div class="spec-cell"><span class="k">Blume</span><span class="v">3D-Druck, LED-Streifen</span></div>
-      <div class="spec-cell"><span class="k">Brillen</span><span class="v">Mehrere Modelle, simulierte Sehbehinderungen</span></div>
-      <div class="spec-cell"><span class="k">Sensor</span><span class="v">Bewegungssensor, grauer Kasten, berührungslos</span></div>
-      <div class="spec-cell"><span class="k">Interaktion</span><span class="v">Handbewegung ändert Farbe &amp; Laufrichtung</span></div>
-      <div class="spec-cell"><span class="k">Baujahr</span><span class="v">2026</span></div>
+      <div class="spec-cell"><span class="k" data-i18n="specBlumeK">Blume</span><span class="v" data-i18n="specBlumeV">3D-Druck, LED-Streifen</span></div>
+      <div class="spec-cell"><span class="k" data-i18n="specBrillenK">Brillen</span><span class="v" data-i18n="specBrillenV">Mehrere Modelle, simulierte Sehbehinderungen</span></div>
+      <div class="spec-cell"><span class="k" data-i18n="specSensorK">Sensor</span><span class="v" data-i18n="specSensorV">Bewegungssensor, grauer Kasten, berührungslos</span></div>
+      <div class="spec-cell"><span class="k" data-i18n="specInteraktionK">Interaktion</span><span class="v" data-i18n="specInteraktionV">Handbewegung ändert Farbe &amp; Laufrichtung</span></div>
+      <div class="spec-cell"><span class="k" data-i18n="specBaujahrK">Baujahr</span><span class="v" data-i18n="specBaujahrV">2026</span></div>
     </div>
   </section>
 
@@ -244,74 +261,150 @@
 <div class="view" id="view-bedienung">
 
   <section>
-    <div class="section-head"><span class="no">01</span><h2>So wird's bedient</h2></div>
-    <p class="section-intro">Fünf kurze Schritte. Am eindrücklichsten wirkt das Werk, wenn man es einmal mit und einmal ohne Brille ausprobiert.</p>
+    <div class="section-head"><span class="no">01</span><h2 data-i18n="h2Bedienung1">So wird's bedient</h2></div>
+    <p class="section-intro" data-i18n="bedienungIntro">Fünf kurze Schritte. Am eindrücklichsten wirkt das Werk, wenn man es einmal mit und einmal ohne Brille ausprobiert.</p>
     <div id="steps"></div>
   </section>
 
   <section>
-    <div class="section-head"><span class="no">02</span><h2>Bedienelemente</h2></div>
+    <div class="section-head"><span class="no">02</span><h2 data-i18n="h2Bedienelemente">Bedienelemente</h2></div>
     <div class="stack" id="controls"></div>
   </section>
 
   <section>
-    <div class="section-head"><span class="no">03</span><h2>Im Umgang mit dem Werk</h2></div>
+    <div class="section-head"><span class="no">03</span><h2 data-i18n="h2Umgang">Im Umgang mit dem Werk</h2></div>
     <div class="rules-box">
-      <h3>Bitte beachten</h3>
+      <h3 data-i18n="rulesHeading">Bitte beachten</h3>
       <ul id="rules"></ul>
     </div>
   </section>
 
   <section>
-    <div class="section-head"><span class="no">04</span><h2>Häufige Fragen</h2></div>
+    <div class="section-head"><span class="no">04</span><h2 data-i18n="h2FAQ">Häufige Fragen</h2></div>
     <div class="stack faq" id="faq"></div>
   </section>
 
 </div>
 
 <footer>
-  <div class="foot-title">Ein Punkt, den nicht alle gleich sehen.</div>
-  <p>Fragen zur Bedienung oder zu den Brillen? Die Aufsicht am Werk hilft jederzeit weiter.</p>
+  <div class="foot-title" data-i18n="footTitle">Ein Punkt, den nicht alle gleich sehen.</div>
+  <p data-i18n="footPara">Fragen zur Bedienung oder zu den Brillen? Die Aufsicht am Werk hilft jederzeit weiter.</p>
   <div class="credits">
     <span>Karla</span><span>Luca</span><span>Julalumin</span><span>Jonas</span><span>Anh Dang</span>
   </div>
-  <div class="fmark"><span class="dot-mark"></span>SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1 · SCHWARZ/WEISS</div>
-  <div class="fmark" style="margin-top:6px;">Projektmodul Interaction Design · Dozent: Yves Peitzner</div>
+  <div class="fmark"><span class="dot-mark"></span><span data-i18n="fmark1">SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1 · SCHWARZ/WEISS</span></div>
+  <div class="fmark" style="margin-top:6px;"><span data-i18n="fmark2">Projektmodul Interaction Design · Dozent: Yves Peitzner</span></div>
 </footer>
 
 <div class="bottom-nav">
-  <button class="nav-btn active" data-view="werk"><span class="dot"></span>Das Werk</button>
-  <button class="nav-btn" data-view="bedienung"><span class="dot"></span>Bedienung</button>
+  <button class="nav-btn active" data-view="werk"><span class="dot"></span><span data-i18n="tabWerk">Das Werk</span></button>
+  <button class="nav-btn" data-view="bedienung"><span class="dot"></span><span data-i18n="tabBedienung">Bedienung</span></button>
 </div>
 
 <script>
-  // ---------- content (hier anpassen) ----------
-  const steps = [
-    { title:"Brille auswählen und aufsetzen", text:"Auf dem Rack neben der Installation hängen mehrere Brillen, jede simuliert eine andere Sehbehinderung. Eine auswählen und aufsetzen." },
-    { title:"Dem Punkt folgen", text:"Die LED-Sonnenblume ansehen und versuchen, dem wandernden farbigen Punkt mit den Augen entlang der Blütenblätter zu folgen." },
-    { title:"Über den grauen Kasten streichen", text:"Eine leichte Handbewegung über den Sensor lässt die Sonnenblume in der Komplementärfarbe leuchten und kehrt zugleich die Laufrichtung des Punktes um." },
-    { title:"Ohne Brille vergleichen", text:"Brille kurz absetzen und denselben Punkt noch einmal verfolgen. Der Unterschied zeigt, wie viel Sehkraft man sonst einfach als selbstverständlich hinnimmt." },
-    { title:"Weitergeben", text:"Brille zurück auf das Rack hängen, damit die nächste Person sie findet." },
-  ];
+  // ---------- translations ----------
+  const i18n = {
+    de: {
+      catno:"Werk Nr. 01",
+      by:"Interaktive Installation, 2026",
+      lead:"Eine 3D-gedruckte Sonnenblume aus LED-Licht. Folge ihrem wandernden Punkt einmal mit den eigenen Augen, einmal mit denen einer Sehbehinderung.",
+      metaDauerK:"Dauer", metaDauerV:"ca. 3 Min.",
+      metaAufbauK:"Aufbau", metaAufbauV:"Blume + Sensor-Kasten",
+      tabWerk:"Das Werk", tabBedienung:"Bedienung",
+      h2Konzept:"Konzept",
+      konzeptText:"Sunflower Project macht Sehbehinderungen für einen Moment erfahrbar. Wer eine der Simulationsbrillen aufsetzt, versucht, einem farbigen Punkt zu folgen, der über die Blütenblätter einer LED-bestückten Sonnenblume wandert. Mit eingeschränkter Sicht wird daraus eine ungleich schwerere Aufgabe. Schon unabhängig vom Punkt verändert sich die Wahrnehmung sofort: Farben wirken blasser oder verschwimmen ineinander, Kontraste gehen verloren, Ränder und Formen werden unscharf, und auch der restliche Raum lässt sich nur noch eingeschränkt erfassen. Die Sonnenblume ist dabei kein Zufall: Sie steht international als Symbol für unsichtbare Behinderungen, also für Einschränkungen, die man einer Person von außen meist nicht ansieht. Das Werk will genau das sichtbar machen, was im Alltag oft unsichtbar bleibt: welches Privileg uneingeschränktes Sehen ist.",
+      h2Technisch:"Technische Daten",
+      specBlumeK:"Blume", specBlumeV:"3D-Druck, LED-Streifen",
+      specBrillenK:"Brillen", specBrillenV:"Mehrere Modelle, simulierte Sehbehinderungen",
+      specSensorK:"Sensor", specSensorV:"Bewegungssensor, grauer Kasten, berührungslos",
+      specInteraktionK:"Interaktion", specInteraktionV:"Handbewegung ändert Farbe & Laufrichtung",
+      specBaujahrK:"Baujahr", specBaujahrV:"2026",
+      h2Bedienung1:"So wird's bedient",
+      bedienungIntro:"Fünf kurze Schritte. Am eindrücklichsten wirkt das Werk, wenn man es einmal mit und einmal ohne Brille ausprobiert.",
+      h2Bedienelemente:"Bedienelemente",
+      h2Umgang:"Im Umgang mit dem Werk",
+      rulesHeading:"Bitte beachten",
+      h2FAQ:"Häufige Fragen",
+      footTitle:"Ein Punkt, den nicht alle gleich sehen.",
+      footPara:"Fragen zur Bedienung oder zu den Brillen? Die Aufsicht am Werk hilft jederzeit weiter.",
+      fmark1:"SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1 · SCHWARZ/WEISS",
+      fmark2:"Projektmodul Interaction Design · Dozent: Yves Peitzner",
+      steps: [
+        { title:"Brille auswählen und aufsetzen", text:"Auf dem Rack neben der Installation hängen mehrere Brillen, jede simuliert eine andere Sehbehinderung. Eine auswählen und aufsetzen." },
+        { title:"Dem Punkt folgen", text:"Die LED-Sonnenblume ansehen und versuchen, dem wandernden farbigen Punkt mit den Augen entlang der Blütenblätter zu folgen." },
+        { title:"Über den grauen Kasten streichen", text:"Eine leichte Handbewegung über den Sensor lässt die Sonnenblume in der Komplementärfarbe leuchten und kehrt zugleich die Laufrichtung des Punktes um." },
+        { title:"Ohne Brille vergleichen", text:"Brille kurz absetzen und denselben Punkt noch einmal verfolgen. Der Unterschied zeigt, wie viel Sehkraft man sonst einfach als selbstverständlich hinnimmt." },
+        { title:"Weitergeben", text:"Brille zurück auf das Rack hängen, damit die nächste Person sie findet." },
+      ],
+      controls: [
+        { name:"Simulationsbrillen", role:"Mehrere Modelle, auf dem Rack", text:"Jede Brille verzerrt das Sehen anders, von eingeschränktem Gesichtsfeld bis zu verschwommenen Kontrasten. Sie bilden reale, häufige Sehbehinderungen nach. Genauere Infos zu den einzelnen Modellen liegen im Flyer neben dem Rack aus.", tags:["Ohne Strom","Über Alltagsbrillen tragbar","Details im Flyer"] },
+        { name:"Grauer Sensor-Kasten", role:"Bewegungssensor, berührungslos", text:"Eine leichte Handbewegung darüber genügt, kein Drücken oder Greifen nötig. Der Sensor löst zwei Dinge gleichzeitig aus: Farbwechsel der LEDs zur Komplementärfarbe der Sonnenblume und Richtungswechsel des Punktes.", tags:["Berührungslos","Sofortige Reaktion"] },
+        { name:"LED-Sonnenblume", role:"3D-Druck mit LED-Streifen", text:"Ein einzelner farbiger Punkt läuft in Schleife über die Blütenblätter. Er ist der Blickfixpunkt der gesamten Installation.", tags:["Punkt läuft in Schleife"] },
+      ],
+      rules: [
+        "Brille nach Gebrauch zurück auf das Rack hängen, damit die nächste Person sie findet.",
+        "Sensor nur leicht mit der Hand streifen, nicht drücken oder festhalten.",
+        "Bei Schwindel oder Unwohlsein die Brille sofort absetzen.",
+        "Die Brillen können meist über eine eigene Sehhilfe getragen werden.",
+      ],
+      faq: [
+        { name:"Warum wechselt die Farbe zur Komplementärfarbe?", text:"Der Farbwechsel verändert den Kontrast, den die jeweilige Sehbehinderung wahrnimmt. Manche Farbpaare machen den Punkt leichter erkennbar, andere schwerer. So wird spürbar, wie unterschiedlich Kontraste je nach Sehvermögen wirken." },
+        { name:"Welche Sehbehinderungen werden simuliert?", text:"Die Brillen bilden unter anderem eingeschränktes Gesichtsfeld, verschwommenes Sehen und reduziertes Kontrastsehen nach. Das sind typische Auswirkungen häufiger Augenerkrankungen." },
+        { name:"Kann ich das Werk auch ohne Brille erleben?", text:"Ja, aber der Kern des Werks liegt im Vergleich: einmal mit, einmal ohne eingeschränkte Sicht denselben Punkt zu verfolgen." },
+      ],
+    },
+    en: {
+      catno:"Piece No. 01",
+      by:"Interactive installation, 2026",
+      lead:"A 3D-printed sunflower made of LED light. Follow its moving dot once with your own eyes, once with the eyes of someone with a visual impairment.",
+      metaDauerK:"Duration", metaDauerV:"approx. 3 min",
+      metaAufbauK:"Setup", metaAufbauV:"Flower + sensor box",
+      tabWerk:"The Piece", tabBedienung:"How To Use",
+      h2Konzept:"Concept",
+      konzeptText:"Sunflower Project makes visual impairments tangible for a moment. Anyone who puts on one of the simulation glasses tries to follow a colored dot moving across the petals of an LED-lit sunflower. With limited vision, that becomes a far harder task. Even without following the dot, perception changes right away: colors look paler or blur together, contrast is lost, edges and shapes become blurry, and the rest of the room is harder to take in. The sunflower is no coincidence. It's an internationally recognized symbol for hidden disabilities, for limitations that usually aren't visible from the outside. The piece aims to make visible exactly what often stays invisible in everyday life: what a privilege it is to see without limitation.",
+      h2Technisch:"Technical Details",
+      specBlumeK:"Flower", specBlumeV:"3D print, LED strips",
+      specBrillenK:"Glasses", specBrillenV:"Multiple models, simulated visual impairments",
+      specSensorK:"Sensor", specSensorV:"Motion sensor, gray box, touch-free",
+      specInteraktionK:"Interaction", specInteraktionV:"Hand movement changes color & direction",
+      specBaujahrK:"Year built", specBaujahrV:"2026",
+      h2Bedienung1:"How it works",
+      bedienungIntro:"Five short steps. The piece is most striking when you try it once with and once without the glasses.",
+      h2Bedienelemente:"Controls",
+      h2Umgang:"Handling The Piece",
+      rulesHeading:"Please note",
+      h2FAQ:"FAQ",
+      footTitle:"A dot not everyone sees the same way.",
+      footPara:"Questions about how to use it or about the glasses? The attendant at the piece is happy to help.",
+      fmark1:"SUNFLOWER PROJECT · USER GUIDE V1 · BLACK/WHITE",
+      fmark2:"Interaction Design project module · Instructor: Yves Peitzner",
+      steps: [
+        { title:"Choose and put on glasses", text:"Several pairs of glasses hang on the rack next to the installation, each simulating a different visual impairment. Choose one and put it on." },
+        { title:"Follow the dot", text:"Look at the LED sunflower and try to follow the moving colored dot with your eyes along the petals." },
+        { title:"Wave over the gray box", text:"A light hand movement over the sensor makes the sunflower light up in its complementary color and reverses the direction the dot travels." },
+        { title:"Compare without glasses", text:"Take off the glasses and follow the same dot again. The difference shows how much eyesight you otherwise just take for granted." },
+        { title:"Pass it on", text:"Hang the glasses back on the rack so the next person can find them." },
+      ],
+      controls: [
+        { name:"Simulation Glasses", role:"Several models, on the rack", text:"Each pair distorts vision differently, from a narrowed field of view to blurred contrast. They recreate real, common visual impairments. More details on the individual models are in the flyer next to the rack.", tags:["No power needed","Fits over everyday glasses","Details in the flyer"] },
+        { name:"Gray Sensor Box", role:"Motion sensor, touch-free", text:"A light hand movement above it is enough, no pressing or grabbing required. The sensor triggers two things at once: the LEDs switch to the sunflower's complementary color, and the dot reverses direction.", tags:["Touch-free","Instant response"] },
+        { name:"LED Sunflower", role:"3D print with LED strips", text:"A single colored dot loops around the petals. It's the focal point of the entire installation.", tags:["Dot runs in a loop"] },
+      ],
+      rules: [
+        "Hang the glasses back on the rack after use, so the next person can find them.",
+        "Only wave your hand lightly over the sensor, don't press or hold it.",
+        "If you feel dizzy or unwell, take the glasses off right away.",
+        "The glasses usually fit over your own prescription glasses.",
+      ],
+      faq: [
+        { name:"Why does the color switch to its complementary color?", text:"The color change alters the contrast that a given visual impairment perceives. Some color pairs make the dot easier to spot, others harder. This makes it tangible how differently contrast works depending on someone's eyesight." },
+        { name:"Which visual impairments are simulated?", text:"Among others, the glasses recreate a narrowed field of view, blurred vision, and reduced contrast sensitivity, typical effects of common eye conditions." },
+        { name:"Can I experience the piece without the glasses?", text:"Yes, but the core of the piece is the comparison: following the same dot once with, once without limited vision." },
+      ],
+    }
+  };
 
-  const controls = [
-    { name:"Simulationsbrillen", role:"Mehrere Modelle, auf dem Rack", text:"Jede Brille verzerrt das Sehen anders, von eingeschränktem Gesichtsfeld bis zu verschwommenen Kontrasten. Sie bilden reale, häufige Sehbehinderungen nach. Genauere Infos zu den einzelnen Modellen liegen im Flyer neben dem Rack aus.", tags:["Ohne Strom","Über Alltagsbrillen tragbar","Details im Flyer"] },
-    { name:"Grauer Sensor-Kasten", role:"Bewegungssensor, berührungslos", text:"Eine leichte Handbewegung darüber genügt, kein Drücken oder Greifen nötig. Der Sensor löst zwei Dinge gleichzeitig aus: Farbwechsel der LEDs zur Komplementärfarbe der Sonnenblume und Richtungswechsel des Punktes.", tags:["Berührungslos","Sofortige Reaktion"] },
-    { name:"LED-Sonnenblume", role:"3D-Druck mit LED-Streifen", text:"Ein einzelner farbiger Punkt läuft in Schleife über die Blütenblätter. Er ist der Blickfixpunkt der gesamten Installation.", tags:["Punkt läuft in Schleife"] },
-  ];
-
-  const rules = [
-    "Brille nach Gebrauch zurück auf das Rack hängen, damit die nächste Person sie findet.",
-    "Sensor nur leicht mit der Hand streifen, nicht drücken oder festhalten.",
-    "Bei Schwindel oder Unwohlsein die Brille sofort absetzen.",
-    "Die Brillen können meist über eine eigene Sehhilfe getragen werden.",
-  ];
-
-  const faq = [
-    { name:"Warum wechselt die Farbe zur Komplementärfarbe?", text:"Der Farbwechsel verändert den Kontrast, den die jeweilige Sehbehinderung wahrnimmt. Manche Farbpaare machen den Punkt leichter erkennbar, andere schwerer. So wird spürbar, wie unterschiedlich Kontraste je nach Sehvermögen wirken." },
-    { name:"Welche Sehbehinderungen werden simuliert?", text:"Die Brillen bilden unter anderem eingeschränktes Gesichtsfeld, verschwommenes Sehen und reduziertes Kontrastsehen nach. Das sind typische Auswirkungen häufiger Augenerkrankungen." },
-    { name:"Kann ich das Werk auch ohne Brille erleben?", text:"Ja, aber der Kern des Werks liegt im Vergleich: einmal mit, einmal ohne eingeschränkte Sicht denselben Punkt zu verfolgen." },
-  ];
+  let currentLang = 'de';
 
   // ---------- render helpers ----------
   function renderAccordion(container, data, numbered=true){
@@ -367,10 +460,27 @@
     container.innerHTML = data.map(r=>`<li>${r}</li>`).join('');
   }
 
-  renderSteps(document.getElementById('steps'), steps);
-  renderAccordion(document.getElementById('controls'), controls);
-  renderRules(document.getElementById('rules'), rules);
-  renderAccordion(document.getElementById('faq'), faq, false);
+  function applyLang(lang){
+    currentLang = lang;
+    const t = i18n[lang];
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if(t[key] !== undefined) el.textContent = t[key];
+    });
+
+    document.getElementById('lang-select').value = lang;
+
+    renderSteps(document.getElementById('steps'), t.steps);
+    renderAccordion(document.getElementById('controls'), t.controls);
+    renderRules(document.getElementById('rules'), t.rules);
+    renderAccordion(document.getElementById('faq'), t.faq, false);
+  }
+
+  document.getElementById('lang-select').addEventListener('change', (e)=>applyLang(e.target.value));
+
+  applyLang('de');
 
   // ---------- tab switching ----------
   function switchView(name){
