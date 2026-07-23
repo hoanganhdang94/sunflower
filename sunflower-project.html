@@ -612,14 +612,40 @@
   document.getElementById('lang-select').addEventListener('change', (e)=>applyLang(e.target.value));
 
   const themeToggle = document.getElementById('theme-toggle');
+  let themeManuallySet = false;
+
+  function setTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    themeToggle.textContent = theme === 'dark' ? '☀' : '☾';
+    themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+  }
+
   themeToggle.addEventListener('click', ()=>{
+    themeManuallySet = true;
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    themeToggle.textContent = isDark ? '☾' : '☀';
-    themeToggle.setAttribute('aria-pressed', String(!isDark));
+    setTheme(isDark ? 'light' : 'dark');
   });
 
-  applyLang('de');
+  // ---------- detect system theme & language ----------
+  const darkModeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  setTheme(darkModeQuery && darkModeQuery.matches ? 'dark' : 'light');
+  if(darkModeQuery){
+    darkModeQuery.addEventListener('change', (e)=>{
+      if(!themeManuallySet) setTheme(e.matches ? 'dark' : 'light');
+    });
+  }
+
+  function detectSystemLang(){
+    const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'en'];
+    for(const l of langs){
+      const code = l.toLowerCase();
+      if(code.startsWith('en')) return 'en';
+      if(code.startsWith('de')) return 'de';
+    }
+    return 'en';
+  }
+
+  applyLang(detectSystemLang());
 
   // ---------- tab switching ----------
   function switchView(name){
