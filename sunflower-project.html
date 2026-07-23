@@ -12,16 +12,26 @@
     --paper:#fafaf8;
     --grey:#6f6f6a;
     --grey-light:#dcdad4;
+    --hero-bg:#0a0a0a;
+    --hero-fg:#fafaf8;
     --display:'Archivo Black', sans-serif;
     --mono:'IBM Plex Mono', monospace;
     --body:'Inter', sans-serif;
+  }
+  html[data-theme="dark"]{
+    --ink:#f2f2ee;
+    --paper:#121212;
+    --grey:#9c9c96;
+    --grey-light:#3a3a37;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{-webkit-tap-highlight-color:transparent;}
   body{
     background:var(--paper); color:var(--ink); font-family:var(--body);
     line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:76px;
+    transition:background-color .25s ease, color .25s ease;
   }
+  .topbar, .tabs, footer{ transition:background-color .25s ease, color .25s ease, border-color .25s ease; }
   @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
   a{color:inherit;}
 
@@ -52,11 +62,18 @@
     background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
   }
   .lang-switch select:focus{ outline:1px dashed var(--ink); outline-offset:2px; }
+  .theme-toggle{
+    background:none; border:1px solid var(--ink); color:var(--ink); cursor:pointer;
+    width:26px; height:26px; border-radius:50%; font-size:13px; line-height:1;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transition:background-color .25s ease, color .25s ease, border-color .25s ease;
+  }
+  html[data-theme="dark"] .theme-toggle{ background:var(--ink); color:var(--paper); }
   @media (max-width:380px){ .cat-no{ display:none; } }
 
   /* ---------- hero ---------- */
   .hero{
-    background:var(--ink); color:var(--paper); position:relative; overflow:hidden;
+    background:var(--hero-bg); color:var(--hero-fg); position:relative; overflow:hidden;
     padding:40px 20px 34px; display:flex; flex-direction:column; justify-content:flex-start;
   }
   .hero-content{ position:relative; z-index:2; }
@@ -73,11 +90,11 @@
 
   .blob-window{ position:relative; z-index:2; padding:22px 22px 26px; margin:6px 0 26px; }
   .blob-window::before{
-    content:""; position:absolute; inset:-6px 0 -10px; z-index:-1; background:var(--paper);
+    content:""; position:absolute; inset:-6px 0 -10px; z-index:-1; background:var(--hero-fg);
     border-radius:58% 42% 63% 37% / 44% 58% 42% 56%;
     filter:blur(9px);
   }
-  .blob-window p{ font-size:1rem; max-width:34ch; color:var(--ink); font-weight:500; }
+  .blob-window p{ font-size:1rem; max-width:34ch; color:var(--hero-bg); font-weight:500; }
 
   .hero .meta-row{
     display:flex; border-top:1px solid rgba(250,250,248,.25);
@@ -87,7 +104,7 @@
   .hero .meta-row div:first-child{ padding-left:0; }
   .hero .meta-row div:last-child{ border-right:none; padding-right:0; }
   .hero .meta-row div span{ display:block; color:#9c9c98; margin-bottom:4px; font-size:10px; }
-  .hero .meta-row div b{ font-family:var(--body); font-weight:600; font-size:13px; text-transform:none; letter-spacing:0; color:var(--paper); }
+  .hero .meta-row div b{ font-family:var(--body); font-weight:600; font-size:13px; text-transform:none; letter-spacing:0; color:var(--hero-fg); }
 
   /* ---------- tabs ---------- */
   .tabs{ position:sticky; top:45px; z-index:19; display:flex; background:var(--paper); border-bottom:1px solid var(--ink); }
@@ -190,15 +207,15 @@
   }
   footer .fmark{ font-family:var(--mono); font-size:10px; color:var(--grey); margin-top:16px; letter-spacing:.05em; display:flex; align-items:center; gap:8px; }
 
-  .bottom-nav{ position:fixed; bottom:0; left:0; right:0; z-index:30; display:flex; background:var(--ink); color:var(--paper); }
+  .bottom-nav{ position:fixed; bottom:0; left:0; right:0; z-index:30; display:flex; background:var(--hero-bg); color:var(--hero-fg); }
   .bottom-nav button{
     flex:1; background:none; border:none; color:#9c9c98; padding:14px 0 10px; font-family:var(--mono);
     font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; display:flex; flex-direction:column;
     align-items:center; gap:5px; cursor:pointer;
   }
   .bottom-nav button .dot{ width:5px; height:5px; border-radius:50%; background:transparent; }
-  .bottom-nav button.active{ color:var(--paper); }
-  .bottom-nav button.active .dot{ background:var(--paper); }
+  .bottom-nav button.active{ color:var(--hero-fg); }
+  .bottom-nav button.active .dot{ background:var(--hero-fg); }
 
   @media (min-width:760px){
     body{ padding-bottom:0; }
@@ -220,6 +237,7 @@
   <div class="mark"><span class="dot-mark"></span>Sunflower Project</div>
   <div class="topbar-right">
     <div class="cat-no" data-i18n="catno">Werk Nr. 01</div>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Dark Mode umschalten" title="Dark Mode">☾</button>
     <div class="lang-switch">
       <select id="lang-select" aria-label="Sprache / Language">
         <option value="de">🇩🇪 DE</option>
@@ -351,7 +369,7 @@
   <div class="credits">
     <span>Karla</span><span>Luca</span><span>Julalumin</span><span>Jonas</span><span>Anh Dang</span>
   </div>
-  <div class="fmark"><span class="dot-mark"></span><span data-i18n="fmark1">SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1 · SCHWARZ/WEISS</span></div>
+  <div class="fmark"><span class="dot-mark"></span><span data-i18n="fmark1">SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1</span></div>
   <div class="fmark" style="margin-top:6px;"><span data-i18n="fmark2">Projektmodul Interaction Design · Dozent: Yves Peitzner</span></div>
 </footer>
 
@@ -394,7 +412,7 @@
       h2FAQ:"Häufige Fragen",
       footTitle:"Ein Punkt, den nicht alle gleich sehen.",
       footPara:"Fragen zur Bedienung oder zu den Brillen? Die Aufsicht am Werk hilft jederzeit weiter.",
-      fmark1:"SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1 · SCHWARZ/WEISS",
+      fmark1:"SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1",
       fmark2:"Projektmodul Interaction Design · Dozent: Yves Peitzner",
       campaignText:"Teil der Privilegien-Kampagne der Hochschule München",
       steps: [
@@ -452,7 +470,7 @@
       h2FAQ:"FAQ",
       footTitle:"A dot not everyone sees the same way.",
       footPara:"Questions about how to use it or about the glasses? The attendant at the piece is happy to help.",
-      fmark1:"SUNFLOWER PROJECT · USER GUIDE V1 · BLACK/WHITE",
+      fmark1:"SUNFLOWER PROJECT · USER GUIDE V1",
       fmark2:"Interaction Design project module · Instructor: Yves Peitzner",
       campaignText:"Part of the Privilege Campaign at Munich University of Applied Sciences",
       steps: [
@@ -575,6 +593,14 @@
   }
 
   document.getElementById('lang-select').addEventListener('change', (e)=>applyLang(e.target.value));
+
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle.addEventListener('click', ()=>{
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeToggle.textContent = isDark ? '☾' : '☀';
+    themeToggle.setAttribute('aria-pressed', String(!isDark));
+  });
 
   applyLang('de');
 
