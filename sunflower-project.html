@@ -12,6 +12,7 @@
     --paper:#fafaf8;
     --grey:#6f6f6a;
     --grey-light:#dcdad4;
+    --ink-soft:#333333;
     --hero-bg:#0a0a0a;
     --hero-fg:#fafaf8;
     --display:'Archivo Black', sans-serif;
@@ -23,6 +24,7 @@
     --paper:#121212;
     --grey:#9c9c96;
     --grey-light:#3a3a37;
+    --ink-soft:#cfcfc9;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{-webkit-tap-highlight-color:transparent;}
@@ -93,6 +95,21 @@
     content:""; position:absolute; inset:-6px 0 -10px; z-index:-1; background:var(--hero-fg);
     border-radius:58% 42% 63% 37% / 44% 58% 42% 56%;
     filter:blur(9px);
+    animation:blobSwim 12s ease-in-out infinite;
+  }
+  @keyframes blobSwim{
+    0%,100%{
+      border-radius:58% 42% 63% 37% / 44% 58% 42% 56%;
+      transform:translate(0,0) scale(1);
+    }
+    33%{
+      border-radius:45% 55% 48% 52% / 56% 44% 55% 45%;
+      transform:translate(4px,-6px) scale(1.03);
+    }
+    66%{
+      border-radius:62% 38% 40% 60% / 38% 60% 40% 62%;
+      transform:translate(-5px,5px) scale(.98);
+    }
   }
   .blob-window p{ font-size:1rem; max-width:34ch; color:var(--hero-bg); font-weight:500; }
 
@@ -158,14 +175,14 @@
   }
   .sketch-caption .idx{ font-family:var(--mono); font-size:11px; color:var(--grey); flex-shrink:0; padding-top:2px; }
   .sketch-caption .name{ font-weight:600; font-size:.95rem; margin-bottom:4px; }
-  .sketch-caption p{ font-size:.88rem; color:#333; max-width:44ch; }
+  .sketch-caption p{ font-size:.88rem; color:var(--ink-soft); max-width:44ch; }
 
   /* ---------- Bedienung: steps ---------- */
   .step{ display:flex; gap:16px; border-bottom:1px solid var(--ink); padding:20px 0; }
   .step:first-child{ border-top:1px solid var(--ink); }
   .step .num{ font-family:var(--mono); font-weight:500; font-size:1.1rem; color:var(--grey); min-width:30px; line-height:1.3; }
   .step .content h3{ font-size:1rem; font-weight:600; margin-bottom:6px; }
-  .step .content p{ color:#333; font-size:.9rem; max-width:48ch; }
+  .step .content p{ color:var(--ink-soft); font-size:.9rem; max-width:48ch; }
 
   /* ---------- control elements (accordion) ---------- */
   .stack{ display:flex; flex-direction:column; border-top:1px solid var(--ink); }
@@ -181,7 +198,7 @@
   .item-head .plus{ font-family:var(--mono); font-size:18px; width:20px; text-align:center; transition:transform .25s ease; flex-shrink:0; }
   .item.open .item-head .plus{ transform:rotate(45deg); }
   .item-body{ max-height:0; overflow:hidden; transition:max-height .35s ease; }
-  .item-body-inner{ padding:0 0 22px 46px; color:#333; font-size:.93rem; max-width:52ch; }
+  .item-body-inner{ padding:0 0 22px 46px; color:var(--ink-soft); font-size:.93rem; max-width:52ch; }
   .item-body-inner p + p{ margin-top:10px; }
   .tag-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
   .tag{ font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; border:1px solid var(--ink); padding:4px 8px; }
@@ -256,11 +273,11 @@
         </filter>
       </defs>
       <g filter="url(#blobblur)" fill="#fafaf8">
-        <ellipse cx="70" cy="40" rx="55" ry="30"/>
-        <ellipse cx="330" cy="70" rx="60" ry="40"/>
-        <ellipse cx="210" cy="20" rx="40" ry="22"/>
-        <ellipse cx="20" cy="130" rx="34" ry="50"/>
-        <ellipse cx="370" cy="180" rx="40" ry="60"/>
+        <ellipse class="blob b1" cx="70" cy="40" rx="55" ry="30"/>
+        <ellipse class="blob b2" cx="330" cy="70" rx="60" ry="40"/>
+        <ellipse class="blob b3" cx="210" cy="20" rx="40" ry="22"/>
+        <ellipse class="blob b4" cx="20" cy="130" rx="34" ry="50"/>
+        <ellipse class="blob b5" cx="370" cy="180" rx="40" ry="60"/>
       </g>
     </svg>
   </div>
@@ -367,9 +384,9 @@
   </div>
 
   <div class="credits">
-    <span>Karla</span><span>Luca</span><span>Julalumin</span><span>Jonas</span><span>Anh Dang</span>
+    <span>Karla</span><span>Luca</span><span>Julalumin</span><span>Jonas</span><span>Anh</span>
   </div>
-  <div class="fmark"><span class="dot-mark"></span><span data-i18n="fmark1">SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1</span></div>
+  <div class="fmark"><span class="dot-mark"></span><span data-i18n="fmark1">SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG</span></div>
   <div class="fmark" style="margin-top:6px;"><span data-i18n="fmark2">Projektmodul Interaction Design · Dozent: Yves Peitzner</span></div>
 </footer>
 
@@ -412,7 +429,7 @@
       h2FAQ:"Häufige Fragen",
       footTitle:"Ein Punkt, den nicht alle gleich sehen.",
       footPara:"Fragen zur Bedienung oder zu den Brillen? Die Aufsicht am Werk hilft jederzeit weiter.",
-      fmark1:"SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG V1",
+      fmark1:"SUNFLOWER PROJECT · BEDIENUNGSANLEITUNG",
       fmark2:"Projektmodul Interaction Design · Dozent: Yves Peitzner",
       campaignText:"Teil der Privilegien-Kampagne der Hochschule München",
       steps: [
@@ -470,7 +487,7 @@
       h2FAQ:"FAQ",
       footTitle:"A dot not everyone sees the same way.",
       footPara:"Questions about how to use it or about the glasses? The attendant at the piece is happy to help.",
-      fmark1:"SUNFLOWER PROJECT · USER GUIDE V1",
+      fmark1:"SUNFLOWER PROJECT · USER GUIDE",
       fmark2:"Interaction Design project module · Instructor: Yves Peitzner",
       campaignText:"Part of the Privilege Campaign at Munich University of Applied Sciences",
       steps: [
